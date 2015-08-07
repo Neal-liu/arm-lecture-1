@@ -15,28 +15,32 @@ fibonacci:
 
 	@ R4 = R0 - 0 (update flags)
 	@ if(R0 <= 0) goto .L3 (which returns 0)
+	subs r4, r0, #0
+	ble .L3
 
 	@ Compare R4 wtih 1
 	@ If R4 == 1 goto .L4 (which returns 1)
+	cmp r4, #1
+	beq .L4
+	
 
 	@ R0 = R4 - 1
 	@ Recursive call to fibonacci with R4 - 1 as parameter
-
-	@ R5 = R0
-	@ R0 = R4 - 2
-	@ Recursive call to fibonacci with R4 - 2 as parameter
-
-	@ R0 = R5 + R0 (update flags)
-
+	add r0, r4, #0xFFFFFFFF
+	mov r3, r1
+	add r1, r3, r2
+	mov r2, r3
+	bl fibonacci
+ 
 	pop {r3, r4, r5, pc}		@EPILOG
 
 	@ END CODE MODIFICATION
 .L3:
-	mov r0, #0			@ R0 = 0
+	mov r0, r2
 	pop {r3, r4, r5, pc}		@ EPILOG
 
 .L4:
-	mov r0, #1			@ R0 = 1
+	mov r0, r1
 	pop {r3, r4, r5, pc}		@ EPILOG
 
 	.size fibonacci, .-fibonacci
