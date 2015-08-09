@@ -3,6 +3,7 @@ CFLAGS	= -O1 -Wall
 LDFLAGS = -fno-stack-protector
 
 objects	= fibseq.o fib.o
+objects2 = fibtime.o fib.o
 
 default: fibseq
 
@@ -11,8 +12,13 @@ default: fibseq
 fibseq: $(objects)
 	$(CC) $(LDFLAGS) -o $@ $^
 
+fibtime: $(objects2)
+	$(CC) $(LDFLAGS) -o $@ $^
+	qemu-arm -L /usr/arm-linux-gnueabihf ./fibtime
+
 fib.o: fib.s
 fibseq.o: fibseq.c
+fibtime.o: fibtime.c
 
 %.o: %.c
 	$(CC) -c $(CFLAGS) -o $@ $<
@@ -21,12 +27,12 @@ fibseq.o: fibseq.c
 	$(CC) -c $(CFLAGS) -o $@ $<
 
 clean:
-	rm -f $(objects) fibseq
+	rm -f $(objects) $(objects2) fibseq fibtime time
 
 QEMU_CMD = qemu-arm -L /usr/arm-linux-gnueabihf ./fibseq &
 CMD = yes 9 | $(call QEMU_CMD) && sleep 1
 
-qemu: fibseq
+qemu: fibseq 
 	@yes 5 | $(call QEMU_CMD)
 	@sleep 1
 	@yes 6 | $(call QEMU_CMD)
