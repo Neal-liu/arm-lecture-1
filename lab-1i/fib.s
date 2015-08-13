@@ -24,7 +24,11 @@ fibonacci:
 	beq .L4
 	
 
+	@ Tail recursive
 	@ R0 = R4 - 1
+	@ R3 = R1		
+	@ R1 = R3 + R2	(prev+val)
+	@ R2 = R3		
 	@ Recursive call to fibonacci with R4 - 1 as parameter
 	add r0, r4, #0xFFFFFFFF
 	mov r3, r1
