@@ -4,7 +4,7 @@
 extern int fibonacci(int x, int a, int b);
 int NanoTime();
 void Iteration(int);
-static int iteration = 10000;
+static int iteration = 1000;
 
 //struct timespec {
 //	time_t   tv_sec;        /* seconds */
@@ -25,7 +25,7 @@ void Iteration(number)
 	int result = 0;
 	int starttime = 0;
 	int endtime = 0;
-	int average = 0;
+	float average = 0;
 	int total = 0;
 	FILE *f = fopen("time_recursive", "a+");	// a+ : read and write file without overwriting. 
 
@@ -36,18 +36,18 @@ void Iteration(number)
 
 		for(j = 0 ; j<iteration ; j++){
 			starttime = NanoTime();
-			printf("start time is %d\n", starttime);
+//			printf("start time is %d\n", starttime);
 			result = fibonacci(number, 0, 1);   
 			endtime = NanoTime();
-			printf("endtime time is %d\n", endtime);
+//			printf("endtime time is %d\n", endtime);
 			if(starttime != 0){
 				total += (endtime-starttime);
 //				printf("total is %d\n", total);
 			}
 		}
-		average = total/iteration;
-		printf("take %ld nanoseconds\n", average);
-		fprintf(f, "%ld\n", average);
+		average = (float)total/(float)iteration;
+		printf("take %f nanoseconds\n", average);
+		fprintf(f, "%f\n", average);
 		printf("The fibonacci sequence at %d is: %d\n", number, result);
 		printf("number is %d\n", number);
 
